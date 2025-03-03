@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tab, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, MapPin, Clock, Bell, Shield } from "lucide-react";
 import ServiceCard, { ServiceInfo } from '../ui-elements/ServiceCard';
 import GlassmorphicCard from '../ui-elements/GlassmorphicCard';

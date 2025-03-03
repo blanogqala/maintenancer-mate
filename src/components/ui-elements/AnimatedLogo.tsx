@@ -7,6 +7,7 @@ interface AnimatedLogoProps {
   showText?: boolean;
   textPosition?: 'right' | 'bottom';
   className?: string;
+  onClick?: () => void;
 }
 
 const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
@@ -14,6 +15,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
   showText = true,
   textPosition = 'right',
   className = '',
+  onClick,
 }) => {
   const [isAnimating, setIsAnimating] = useState(true);
   const shouldShowText = useDelayedAppear(400);
@@ -43,7 +45,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
     : 'flex items-center gap-3';
   
   return (
-    <div className={`${containerClasses} ${className}`}>
+    <div className={`${containerClasses} ${className}`} onClick={onClick}>
       <div className={`relative ${sizeClasses[size]}`}>
         <div className={`absolute inset-0 bg-gradient-to-br from-handyhub-400 to-handyhub-600 rounded-xl ${isAnimating ? 'animate-pulse' : ''}`}></div>
         <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">H</div>

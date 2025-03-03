@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tab, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, Clock, DollarSign, MapPin, MessageSquare, Star, Briefcase, TrendingUp } from "lucide-react";
 import { useAuth } from '@/context/AuthContext';
 import GlassmorphicCard from '../ui-elements/GlassmorphicCard';
