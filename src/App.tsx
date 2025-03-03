@@ -11,6 +11,10 @@ import UserDashboard from "./pages/UserDashboard";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ServiceDetails from "./pages/ServiceDetails";
+import BookingPage from "./pages/BookingPage";
+import EmergencySOS from "./pages/EmergencySOS";
+import ServiceProviderProfile from "./pages/ServiceProviderProfile";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +31,10 @@ const App = () => (
             <Route path="/user" element={<UserDashboard />} />
             <Route path="/provider" element={<ProviderDashboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/service/:id" element={<ServiceDetails />} />
+            <Route path="/booking/:id" element={<BookingPage />} />
+            <Route path="/emergency" element={<EmergencySOS />} />
+            <Route path="/provider-profile/:id" element={<ServiceProviderProfile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

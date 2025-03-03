@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
-import { cn } from '@/lib/utils';
+import { Card } from "@/components/ui/card";
+import { Star, Clock, MapPin, ArrowRight } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 export interface ServiceInfo {
   id: string;
@@ -13,127 +13,80 @@ export interface ServiceInfo {
   imageUrl: string;
   rating: number;
   price: number;
-  currency?: string;
   providerName: string;
-  estimatedTime?: string;
-  distance?: string;
-  isPopular?: boolean;
+  estimatedTime: string;
+  distance: string;
   isEmergency?: boolean;
+  isPopular?: boolean;
+  description?: string;
 }
 
 interface ServiceCardProps {
   service: ServiceInfo;
-  variant?: 'default' | 'compact' | 'featured';
-  onClick?: () => void;
-  className?: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({
-  service,
-  variant = 'default',
-  onClick,
-  className,
-}) => {
-  const {
-    title,
-    category,
-    imageUrl,
-    rating,
-    price,
-    currency = 'ZAR',
-    providerName,
-    estimatedTime,
-    distance,
-    isPopular,
-    isEmergency
-  } = service;
+const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
+  const navigate = useNavigate();
 
-  const isCompact = variant === 'compact';
-  const isFeatured = variant === 'featured';
+  const viewServiceDetails = () => {
+    navigate(`/service/${service.id}`);
+  };
   
   return (
-    <Card 
-      className={cn(
-        'overflow-hidden transition-all duration-300 hover:shadow-subtle',
-        isFeatured ? 'border-handyhub-200 bg-gradient-to-br from-handyhub-50 to-white' : '',
-        onClick ? 'cursor-pointer hover:-translate-y-1' : '',
-        className
-      )}
-      onClick={onClick}
-    >
-      <div className="relative">
-        <div className={`bg-cover bg-center w-full ${isCompact ? 'h-32' : 'h-44'}`} 
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
-        
-        {/* Tags Overlay */}
-        <div className="absolute top-2 left-2 flex gap-2">
-          {isPopular && (
-            <Badge variant="secondary" className="bg-white/90 text-handyhub-800 backdrop-blur-sm">
+    <Card className="overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-1/4 h-32 md:h-auto relative">
+          <img
+            src={service.imageUrl}
+            alt={service.title}
+            className="w-full h-full object-cover"
+          />
+          {service.isEmergency && (
+            <Badge variant="destructive" className="absolute top-2 left-2">
+              Emergency
+            </Badge>
+          )}
+          {service.isPopular && !service.isEmergency && (
+            <Badge variant="secondary" className="absolute top-2 left-2">
               Popular
             </Badge>
           )}
-          {isEmergency && (
-            <Badge variant="destructive" className="backdrop-blur-sm">
-              SOS
-            </Badge>
-          )}
         </div>
         
-        {/* Provider Distance */}
-        {distance && (
-          <div className="absolute bottom-2 right-2">
-            <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-              {distance} away
-            </Badge>
+        <div className="flex-1 p-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
+            <div>
+              <h3 className="font-semibold text-lg">{service.title}</h3>
+              <p className="text-sm text-muted-foreground">{service.category}</p>
+            </div>
+            <div className="flex items-center mt-1 md:mt-0">
+              <Star className="text-yellow-400 w-4 h-4 mr-1" />
+              <span className="font-medium">{service.rating}</span>
+            </div>
           </div>
-        )}
+          
+          <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm mb-3">
+            <div className="flex items-center">
+              <Clock className="text-muted-foreground w-4 h-4 mr-1" />
+              <span>{service.estimatedTime}</span>
+            </div>
+            <div className="flex items-center">
+              <MapPin className="text-muted-foreground w-4 h-4 mr-1" />
+              <span>{service.distance}</span>
+            </div>
+            <div className="font-medium">
+              R{service.price}
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-sm text-muted-foreground">{service.providerName}</span>
+            <Button variant="outline" size="sm" onClick={viewServiceDetails}>
+              View <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </div>
-      
-      <CardHeader className={cn(
-        "space-y-1",
-        isCompact ? "px-3 py-2" : "px-4 py-3"
-      )}>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className={cn(
-              "text-foreground",
-              isCompact ? "text-base" : "text-lg"
-            )}>
-              {title}
-            </CardTitle>
-            <CardDescription className="text-muted-foreground">
-              {category}
-            </CardDescription>
-          </div>
-          <div className="flex items-center">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-            <span className="text-sm font-medium">{rating.toFixed(1)}</span>
-          </div>
-        </div>
-      </CardHeader>
-      
-      {!isCompact && (
-        <CardContent className="px-4 py-0">
-          <div className="text-sm text-muted-foreground">
-            <p>Provider: {providerName}</p>
-            {estimatedTime && <p className="mt-1">Est. time: {estimatedTime}</p>}
-          </div>
-        </CardContent>
-      )}
-      
-      <CardFooter className={cn(
-        "flex justify-between items-center border-t",
-        isCompact ? "px-3 py-2" : "px-4 py-3"
-      )}>
-        <div className="font-semibold text-handyhub-800">
-          {currency} {price.toFixed(2)}
-        </div>
-        
-        <Button variant="default" size={isCompact ? "sm" : "default"} className="bg-handyhub-500 hover:bg-handyhub-600 text-white">
-          Book Now
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

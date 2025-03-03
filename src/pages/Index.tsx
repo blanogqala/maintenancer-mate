@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,8 +12,15 @@ import OnboardingScreen from '@/components/screens/OnboardingScreen';
 const Index = () => {
   const navigate = useNavigate();
   const { isAuthenticated, userType } = useAuth();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
+    // Check if this is the first visit
+    const hasVisitedBefore = localStorage.getItem('handyhub_visited');
+    if (!hasVisitedBefore && !isAuthenticated) {
+      setShowOnboarding(true);
+    }
+
     // Redirect authenticated users to their respective dashboards
     if (isAuthenticated) {
       if (userType === 'provider') {
@@ -27,6 +34,15 @@ const Index = () => {
   const navigateToAuth = () => {
     navigate('/auth');
   };
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('handyhub_visited', 'true');
+  };
+
+  if (showOnboarding) {
+    return <OnboardingScreen onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <AuthProvider>

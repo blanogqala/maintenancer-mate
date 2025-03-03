@@ -1,13 +1,15 @@
+
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, MapPin, Clock, Bell, Shield } from "lucide-react";
+import { Search, MapPin, Clock, Bell, Shield, Camera } from "lucide-react";
 import ServiceCard, { ServiceInfo } from '../ui-elements/ServiceCard';
 import GlassmorphicCard from '../ui-elements/GlassmorphicCard';
 import { useAuth } from '@/context/AuthContext';
 import { useStaggeredAnimation } from '@/utils/animations';
+import { useNavigate } from 'react-router-dom';
 
 // Mock service data
 const popularServices: ServiceInfo[] = [
@@ -99,21 +101,36 @@ const nearbyServices: ServiceInfo[] = [
 
 // Categories data
 const categories = [
-  { name: 'Plumbing', icon: '🔧' },
-  { name: 'Electrical', icon: '⚡' },
-  { name: 'Cleaning', icon: '🧹' },
-  { name: 'Carpentry', icon: '🪚' },
-  { name: 'Painting', icon: '🖌️' },
-  { name: 'Gardening', icon: '🌱' },
-  { name: 'Moving', icon: '📦' },
-  { name: 'Appliance', icon: '🔌' }
+  { id: 'plumbing', name: 'Plumbing', icon: '🔧' },
+  { id: 'electrical', name: 'Electrical', icon: '⚡' },
+  { id: 'cleaning', name: 'Cleaning', icon: '🧹' },
+  { id: 'carpentry', name: 'Carpentry', icon: '🪚' },
+  { id: 'painting', name: 'Painting', icon: '🖌️' },
+  { id: 'gardening', name: 'Gardening', icon: '🌱' },
+  { id: 'moving', name: 'Moving', icon: '📦' },
+  { id: 'appliance', name: 'Appliance', icon: '🔌' }
 ];
 
 const UserHome: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const popularVisibleIndices = useStaggeredAnimation(popularServices.length, 100);
   const nearbyVisibleIndices = useStaggeredAnimation(nearbyServices.length, 100);
+
+  const handleEmergencySOS = () => {
+    navigate('/emergency');
+  };
+
+  const handleDiagnostic = () => {
+    // In a real app, this would open the AR diagnostic feature
+    navigate('/ar-diagnostic');
+  };
+
+  const handleCategoryClick = (categoryId: string) => {
+    // In a real app, this would filter services by category
+    console.log(`Category clicked: ${categoryId}`);
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 pb-20 md:pb-6">
@@ -140,32 +157,59 @@ const UserHome: React.FC = () => {
         </CardContent>
       </Card>
       
-      {/* Emergency SOS Button */}
-      <GlassmorphicCard
-        className="mb-8 cursor-pointer"
-        variant="strong"
-        withHover
-        withBorder
-      >
-        <div className="flex items-center gap-6">
-          <div className="bg-red-500 h-12 w-12 rounded-full flex items-center justify-center">
-            <Bell className="text-white animate-pulse" size={24} />
+      {/* Emergency SOS and Diagnostics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <GlassmorphicCard
+          className="cursor-pointer"
+          variant="strong"
+          withHover
+          withBorder
+          onClick={handleEmergencySOS}
+        >
+          <div className="flex items-center gap-6">
+            <div className="bg-red-500 h-12 w-12 rounded-full flex items-center justify-center">
+              <Bell className="text-white animate-pulse" size={24} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">Emergency SOS</h3>
+              <p className="text-sm text-muted-foreground">
+                Tap for immediate assistance with urgent issues
+              </p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-lg">Emergency SOS</h3>
-            <p className="text-sm text-muted-foreground">
-              Tap for immediate assistance with urgent issues
-            </p>
+        </GlassmorphicCard>
+
+        <GlassmorphicCard
+          className="cursor-pointer"
+          variant="normal"
+          withHover
+          withBorder
+          onClick={handleDiagnostic}
+        >
+          <div className="flex items-center gap-6">
+            <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center">
+              <Camera className="text-white" size={24} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">AR Diagnostics</h3>
+              <p className="text-sm text-muted-foreground">
+                Scan your issue for AI-powered recommendations
+              </p>
+            </div>
           </div>
-        </div>
-      </GlassmorphicCard>
+        </GlassmorphicCard>
+      </div>
       
       {/* Categories */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Categories</h2>
         <div className="grid grid-cols-4 gap-3">
-          {categories.map((category, index) => (
-            <Card key={index} className="cursor-pointer hover:shadow-subtle transition-shadow border border-gray-100">
+          {categories.map((category) => (
+            <Card 
+              key={category.id} 
+              className="cursor-pointer hover:shadow-subtle transition-shadow border border-gray-100"
+              onClick={() => handleCategoryClick(category.id)}
+            >
               <CardContent className="p-3 flex flex-col items-center text-center">
                 <div className="text-2xl mb-1">{category.icon}</div>
                 <span className="text-xs">{category.name}</span>
