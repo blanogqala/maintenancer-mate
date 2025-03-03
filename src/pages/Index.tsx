@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import AnimatedLogo from '@/components/ui-elements/AnimatedLogo';
 import GlassmorphicCard from '@/components/ui-elements/GlassmorphicCard';
-import { ArrowRight, Tool, Shield, Clock, Users } from "lucide-react";
+import { ArrowRight, Wrench, Shield, Clock, Users } from "lucide-react";
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import OnboardingScreen from '@/components/screens/OnboardingScreen';
 
@@ -65,7 +65,7 @@ const Index = () => {
             <GlassmorphicCard>
               <div className="p-6 flex flex-col items-center text-center">
                 <div className="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
-                  <Tool size={24} />
+                  <Wrench size={24} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Expert Providers</h3>
                 <p className="text-gray-600">
