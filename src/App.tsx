@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -22,13 +21,11 @@ const setupCapacitor = async () => {
   if (window.Capacitor) {
     try {
       // Apply mobile-specific configurations
-      const { StatusBar } = await import('@capacitor/status-bar');
-      StatusBar.setBackgroundColor({ color: '#0e95e9' });
+      if (window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar) {
+        window.Capacitor.Plugins.StatusBar.setBackgroundColor({ color: '#0e95e9' });
+      }
       
-      // Prevent screen sleep during app usage
-      const { KeepAwake } = await import('@capacitor/keep-awake');
-      KeepAwake.keepAwake();
-      
+      // We're not using KeepAwake due to installation issues
       console.log('Capacitor initialized successfully');
     } catch (error) {
       console.error('Error initializing Capacitor:', error);
