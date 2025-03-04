@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,6 +16,7 @@ import ServiceDetails from "./pages/ServiceDetails";
 import BookingPage from "./pages/BookingPage";
 import EmergencySOS from "./pages/EmergencySOS";
 import ServiceProviderProfile from "./pages/ServiceProviderProfile";
+import CategoryProviders from "./pages/CategoryProviders";
 
 // Initialize Capacitor if available
 const setupCapacitor = async () => {
@@ -58,6 +60,7 @@ const App = () => {
               <Route path="/booking/:id" element={<BookingPage />} />
               <Route path="/emergency" element={<EmergencySOS />} />
               <Route path="/provider-profile/:id" element={<ServiceProviderProfile />} />
+              <Route path="/category/:categoryId" element={<CategoryProviders />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

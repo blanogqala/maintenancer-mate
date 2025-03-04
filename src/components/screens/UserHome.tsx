@@ -1,18 +1,19 @@
-
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, MapPin, Clock, Bell, Shield, Camera } from "lucide-react";
-import ServiceCard, { ServiceInfo } from '../ui-elements/ServiceCard';
+import ServiceCard from '../ui-elements/ServiceCard';
 import GlassmorphicCard from '../ui-elements/GlassmorphicCard';
 import { useAuth } from '@/context/AuthContext';
 import { useStaggeredAnimation } from '@/utils/animations';
 import { useNavigate } from 'react-router-dom';
+import AnimatedLogo from '@/components/ui-elements/AnimatedLogo';
+import { categories } from '@/data/services';
 
 // Mock service data
-const popularServices: ServiceInfo[] = [
+const popularServices = [
   {
     id: '1',
     title: 'Emergency Plumbing',
@@ -62,7 +63,7 @@ const popularServices: ServiceInfo[] = [
   }
 ];
 
-const nearbyServices: ServiceInfo[] = [
+const nearbyServices = [
   {
     id: '5',
     title: 'Lawn Mowing Service',
@@ -99,18 +100,6 @@ const nearbyServices: ServiceInfo[] = [
   }
 ];
 
-// Categories data
-const categories = [
-  { id: 'plumbing', name: 'Plumbing', icon: '🔧' },
-  { id: 'electrical', name: 'Electrical', icon: '⚡' },
-  { id: 'cleaning', name: 'Cleaning', icon: '🧹' },
-  { id: 'carpentry', name: 'Carpentry', icon: '🪚' },
-  { id: 'painting', name: 'Painting', icon: '🖌️' },
-  { id: 'gardening', name: 'Gardening', icon: '🌱' },
-  { id: 'moving', name: 'Moving', icon: '📦' },
-  { id: 'appliance', name: 'Appliance', icon: '🔌' }
-];
-
 const UserHome: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -123,26 +112,27 @@ const UserHome: React.FC = () => {
   };
 
   const handleDiagnostic = () => {
-    // In a real app, this would open the AR diagnostic feature
     navigate('/ar-diagnostic');
   };
 
   const handleCategoryClick = (categoryId: string) => {
-    // In a real app, this would filter services by category
-    console.log(`Category clicked: ${categoryId}`);
+    navigate(`/category/${categoryId}`);
   };
 
   return (
     <div className="container mx-auto px-4 py-6 pb-20 md:pb-6">
-      {/* Welcome Section */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">
-          Hi, {user?.name || 'there'}!
-        </h1>
-        <p className="text-muted-foreground">What service do you need today?</p>
+      <div className="mb-6 flex flex-col items-center md:flex-row md:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">
+            Hi, {user?.name || 'there'}!
+          </h1>
+          <p className="text-muted-foreground">What service do you need today?</p>
+        </div>
+        <div className="mt-4 md:mt-0">
+          <AnimatedLogo size="sm" textPosition="right" />
+        </div>
       </div>
       
-      {/* Search Box */}
       <Card className="mb-8 border-0 shadow-subtle overflow-hidden">
         <CardContent className="p-3">
           <div className="relative">
@@ -157,7 +147,6 @@ const UserHome: React.FC = () => {
         </CardContent>
       </Card>
       
-      {/* Emergency SOS and Diagnostics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <GlassmorphicCard
           className="cursor-pointer"
@@ -200,7 +189,6 @@ const UserHome: React.FC = () => {
         </GlassmorphicCard>
       </div>
       
-      {/* Categories */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Categories</h2>
         <div className="grid grid-cols-4 gap-3">
@@ -219,7 +207,6 @@ const UserHome: React.FC = () => {
         </div>
       </div>
       
-      {/* Services Tabs */}
       <div className="mb-6">
         <Tabs defaultValue="popular" className="w-full">
           <TabsList className="w-full mb-4">
@@ -256,7 +243,6 @@ const UserHome: React.FC = () => {
         </Tabs>
       </div>
       
-      {/* Features */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Card className="p-4 bg-gradient-to-br from-handyhub-50 to-white">
           <div className="flex items-start gap-3">
