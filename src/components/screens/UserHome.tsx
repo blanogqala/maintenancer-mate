@@ -181,7 +181,7 @@ const UserHome: React.FC = () => {
 
         <GlassmorphicCard
           className="cursor-pointer"
-          variant="normal"
+          variant="default" // This was "normal" which is invalid, replaced with "default"
           withHover
           withBorder
           onClick={handleDiagnostic}
